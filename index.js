@@ -1,9 +1,11 @@
+require('dotenv'). config()
 const { response } = require('express')
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+const mongoose = require('mongoose')
+const Person = require('./models/person')
 const app = express()
-
 
 app.use(express.json())
 app.use(morgan('tiny'))
@@ -39,7 +41,10 @@ let phonebookLength = phonebook.reduce((totalLength, person) => {
 }, 0)
 
 app.get('/api/persons', (request, response) => {
-    response.json(phonebook)
+    Person.find({}).then(person => {
+        response.json(person)
+    })
+
 })
 
 app.get('/api/info', (request, response) => {
@@ -52,25 +57,22 @@ app.get('/api/info', (request, response) => {
 })
 
 app.get('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id)
-    const person = phonebook.find(persons => persons.id === id)
-    if (person) {
+    Person.findById(req.params.id).then(person => {
         res.json(person)
-    }
-    else {
-        res.status(404).end()
-    }
+    })
 })
 
-app.delete('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id)
-    phonebook = phonebook.filter(person => person.id !== id)
-
-    res.status(204).end()
+app.delete('/api/persons/:id', (req, res, next) => {
+    Person.findByIdAndRemove(req.params.id)
+        .then(result => {
+            res.status(204).end()
+        })
+        .catch(error => next(error))
 })
 
-app.post('/api/persons', (req,res) => {
+app.post('/api/persons', (req, res) => {
     const newPerson = req.body
+
     if (!newPerson.name) {
         return res.status(400).json({
             error: 'Missing name!'
@@ -89,15 +91,27 @@ app.post('/api/persons', (req,res) => {
         })
     }
 
-    const person = {
-        id : Math.floor(Math.random() * 101),
+    const person = new Person({
         name: newPerson.name,
         number: newPerson.number,
-    }
+    })
 
-    phonebook = phonebook.concat(person)
-    res.json(person)
+    person.save().then(savedPerson => {
+        res.json(savedPerson)
+    })
 })
+
+const errorHandler = (error, req, res, next) => {
+    console.error(error.message)
+
+    if (error.name === 'CastError') {
+        return res.status(400).send({ error: 'Malformatted ID!' })
+    }
+    
+    next(error)
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
