@@ -80,9 +80,6 @@ const removePerson = (id) => {
     setPersons(persons.filter(person => person.id !== selectedID))
     setMessage(`${selectedName} has been deleted!`)
   }
-  
-
-
 }
 
 console.log(query)

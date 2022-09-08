@@ -15,8 +15,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:ui": "rm -rf build && npm run build && cp -r build D:/ours/FullStackOpen/part3",
+    "deploy": "git push heroku main",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",    
+    "logs:prod": "heroku logs --tail"
   },
+
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -33,6 +38,8 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ]
+    ],
+
+    "proxy": "http://localhost:3001"
   }
 }
