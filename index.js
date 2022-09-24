@@ -1,6 +1,6 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable no-unused-vars */
-require('dotenv'). config()
+require('dotenv').config()
 const { response } = require('express')
 const express = require('express')
 const morgan = require('morgan')

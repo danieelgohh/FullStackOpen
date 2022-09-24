@@ -1,3 +1,6 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable no-unused-vars */
+/* eslint-disable eqeqeq */
 const mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
@@ -7,7 +10,7 @@ if (process.argv.length < 3) {
 
 const password = process.argv[2]
 
-const url = `mongodb+srv://fullstackopen:${password}@cluster0.ccpmbhx.mongodb.net/?retryWrites=true&w=majority`
+const url = `mongodb+srv://db_danielGoh:${password}@cluster0.ycgx5.mongodb.net/?retryWrites=true&w=majority`
 
 const personSchema = new mongoose.Schema({
   name: String,
@@ -22,13 +25,13 @@ mongoose
     console.log('connected')
 
     if (process.argv.length == 3) {
-        Person.find({}).then(result => {
-            result.forEach(person => {
-                console.log(Person.find({}))
-                console.log(person)
-            })
-        mongoose.connection.close()    
+      Person.find({}).then(result => {
+        result.forEach(person => {
+          console.log(Person.find({}))
+          console.log(person)
         })
+        mongoose.connection.close()
+      })
     }
 
     const person = new Person({
