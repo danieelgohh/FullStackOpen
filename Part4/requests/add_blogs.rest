@@ -1,0 +1,11 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlciIsImlkIjoiNjQzNmU1MGFmZWU3YjdkMzJmOTk3NGI0IiwiaWF0IjoxNjgxMzcwNDM1fQ.GZ1zZhy-P5Qq4yqN_-E0Moda6TGAAXeWpyvNI2Js6g0
+
+{
+    "title": "Second class tests",
+    "author": "Robert C. Martin",
+    "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
+    "likes": 10,
+    "userId": "6436e50afee7b7d32f9974b4"
+}
